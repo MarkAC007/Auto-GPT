@@ -1,7 +1,7 @@
 import json
 import random
 import commands as cmd
-from memory import PineconeMemory
+from memory import get_memory
 import data
 import chat
 from colorama import Fore, Style
@@ -283,9 +283,7 @@ user_input = "Determine which next command to use, and respond using the format 
 
 # Initialize memory and make sure it is empty.
 # this is particularly important for indexing and referencing pinecone memory
-memory = PineconeMemory()
-memory.clear()
-
+memory = get_memory(cfg, init=True)
 print('Using memory of type: ' + memory.__class__.__name__)
 
 # Interaction Loop
@@ -357,7 +355,7 @@ while True:
             f"COMMAND = {Fore.CYAN}{command_name}{Style.RESET_ALL}  ARGUMENTS = {Fore.CYAN}{arguments}{Style.RESET_ALL}")
 
     # Execute command
-    if command_name.lower() == "error":
+    if command_name.lower().startswith( "error" ):
         result = f"Command {command_name} threw the following error: " + arguments
     elif command_name == "human_feedback":
         result = f"Human feedback: {user_input}"
